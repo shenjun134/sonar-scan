@@ -1,0 +1,319 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<style type="text/css">
+.style1 {
+	width: 163px;
+}
+
+.style2 {
+	width: 230px;
+}
+
+.style3 {
+	width: 140px;
+}
+
+.style4 {
+	width: 233px;
+}
+
+.style5 {
+	width: 80px;
+}
+
+.style6 {
+	width: 32px;
+}
+
+.style8 {
+	width: 273px;
+}
+
+.style7 {
+	text-decoration: none;
+}
+</style>
+<script>
+	function toggle(id, val) {
+		if (val == "open") {
+			document.getElementById("subItem" + id).style.display = "block";
+			document.getElementById("main" + id).innerHTML = '&nbsp;<a href="javascript:void(0)" onclick="toggle('
+					+ id + ', \'close\')" class="style7">-</a>&nbsp;';
+		} else {
+			document.getElementById("subItem" + id).style.display = "none";
+			document.getElementById("main" + id).innerHTML = '&nbsp;<a href="javascript:void(0)" onclick="toggle('
+					+ id + ', \'open\')" class="style7">+</a>&nbsp;';
+		}
+	}
+	function changeSize(id) {
+		if (document.getElementById(id).style.pixelWidth == 426) {
+			document.getElementById(id).style.pixelWidth = 851;
+			document.getElementById(id).style.pixelHeight = 640;
+		} else {
+			document.getElementById(id).style.pixelWidth = 426;
+			document.getElementById(id).style.pixelHeight = 320;
+		}
+	}
+</script>
+</head>
+<body>
+	<p
+		style="font-family: 'Microsoft Sans Serif'; font-size: xx-large; font-weight: bolder; height: 19px;">
+		Sonar Report</p>
+	<hr style="color: #800000" />
+	<p
+		style="font-family: 'Microsoft Sans Serif'; font-size: x-large; font-weight: bolder">
+		Summary</p>
+	<table style="width: 100%; font-family: Calibri; font-size: medium;">
+		<tr>
+			<td class="style1" style="background-color: #D6EBFC">Project
+				Name</td>
+			<td class="style2">TestProject</td>
+			<td class="style3" style="background-color: #D6EBFC">Team
+				Coverage Rate</td>
+			<td class="style2" id="TotalScriptsCount">25.00%</td>
+			<td class="style3" style="background-color: #D6EBFC">Team
+				Compliance Rate</td>
+			<td class="style2" id="TotalManualCaseCount">20.00%</td>
+		</tr>
+		<tr>
+			<td class="style1" style="background-color: #D6EBFC">Start Time</td>
+			<td class="style2">2016-09-01 00:00:01</td>
+		</tr>
+		<tr>
+			<td class="style1" style="background-color: #D6EBFC">End Time</td>
+			<td class="style2">2016-11-01 00:00:01</td>
+			<td class="style3">&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+	</table>
+	<p
+		style="font-family: 'Microsoft Sans Serif'; font-size: x-large; font-weight: bolder; text-decoration: underline;">
+		Overview - Employee Id Statistic</p>
+	<table
+		style="border-style: ridge; border-width: 1px; width: 100%; border-spacing: 0px;"
+		cellpadding="0" cellspacing="0">
+		<tr>
+			<th
+				style="vertical-align: middle; text-align: center; font-family: Calibri; padding: 0px; margin: 0px; background-color: #005CA6; color: #FFFFFF; font-weight: bold; font-size: x-large;"style6">
+				&nbsp;</th>
+			<th
+				style="vertical-align: middle; text-align: center; font-family: Calibri; padding: 0px; margin: 0px; background-color: #005CA6; color: #FFFFFF; font-weight: bold; font-size: large;"
+				class="style5">Team ID</th>
+			<th
+				style="vertical-align: middle; text-align: center; font-family: Calibri; padding: 0px; margin: 0px; background-color: #005CA6; color: #FFFFFF; font-weight: bold; font-size: large;"
+				class="style7">Team Line Count</th>
+			<th
+				style="vertical-align: middle; text-align: center; font-family: Calibri; padding: 0px; margin: 0px; background-color: #005CA6; color: #FFFFFF; font-weight: bold; font-size: large;"
+				class="style4">Coverage Rate</th>
+			<th
+				style="vertical-align: middle; text-align: center; font-family: Calibri; padding: 0px; margin: 0px; background-color: #005CA6; color: #FFFFFF; font-weight: bold; font-size: large;">
+				Compliance Rate</th>
+		</tr>
+		<tr>
+			<td id="main1"
+				style="vertical-align: middle; text-align: center; font-family: Calibri; padding: 0px; margin: 0px; background-color: #FFFFFF;"><A
+				onclick="toggle(1, 'open')" class="style7" href="javascript:void(0)">+</A>
+				&nbsp;</td>
+			<td
+				style="vertical-align: middle; text-align: center; font-family: Calibri; padding: 0px; margin: 0px; background-color: #FFFFFF;">
+				team_1</td>
+			<td
+				style="vertical-align: middle; text-align: center; font-family: Calibri; padding: 0px; margin: 0px; background-color: #FFFFFF;">
+				3</td>
+			<td
+				style="vertical-align: middle; text-align: center; font-family: Calibri; padding: 0px; margin: 0px; background-color: #FFFFFF; color: #008000;">
+				33.33%</td>
+			<td
+				style="vertical-align: middle; text-align: center; font-family: Calibri; padding: 0px; margin: 0px; background-color: #FFFFFF; color: #008000;">
+				0%</td>
+		</tr>
+	</table>
+	<div id=subItem1 style="display: none;">
+		<table align="center"
+			style="border-style: ridge; border-width: 1px; width: 98%;"
+			cellpadding="0" cellspacing="0">
+			<tr>
+				<th
+					style="vertical-align: middle; text-align: center; font-family: Calibri; padding: 0px; margin: 0px; background-color: #007CA6; color: #FFFFFF; font-weight: bold; font-size: medium;"style6">
+					&nbsp;</th>
+				<th
+					style="vertical-align: middle; text-align: center; font-family: Calibri; padding: 0px; margin: 0px; background-color: #007CA6; color: #FFFFFF; font-weight: bold; font-size: medium;"
+					class="style5">Emp ID</th>
+				<th
+					style="vertical-align: middle; text-align: center; font-family: Calibri; padding: 0px; margin: 0px; background-color: #007CA6; color: #FFFFFF; font-weight: bold; font-size: medium;"
+					class="style7">Emp Line Count</th>
+				<th
+					style="vertical-align: middle; text-align: center; font-family: Calibri; padding: 0px; margin: 0px; background-color: #007CA6; color: #FFFFFF; font-weight: bold; font-size: medium;"
+					class="style4">Coverage Rate</th>
+				<th
+					style="vertical-align: middle; text-align: center; font-family: Calibri; padding: 0px; margin: 0px; background-color: #007CA6; color: #FFFFFF; font-weight: bold; font-size: medium;">
+					Compliance Rate</th>
+			</tr>
+			<tr>
+				<td id="main"
+					style="vertical-align: middle; text-align: center; font-family: Calibri; padding: 0px; margin: 0px; background-color: #FFFFFF;">
+					&nbsp;</td>
+				<td
+					style="vertical-align: middle; text-align: center; font-family: Calibri; padding: 0px; margin: 0px; background-color: #FFFFFF;">
+					e001</td>
+				<td
+					style="vertical-align: middle; text-align: center; font-family: Calibri; padding: 0px; margin: 0px; background-color: #FFFFFF;">
+					3</td>
+				<td
+					style="vertical-align: middle; text-align: center; font-family: Calibri; padding: 0px; margin: 0px; background-color: #FFFFFF; color: #008000;">
+					33.33%</td>
+				<td
+					style="vertical-align: middle; text-align: center; font-family: Calibri; padding: 0px; margin: 0px; background-color: #FFFFFF; color: #008000;">
+					0%</td>
+			</tr>
+		</table>
+		<table align="center"
+			style="border-style: ridge; border-width: 2px; width: 97%;"
+			cellpadding="0" cellspacing="0">
+			<tr>
+				<th width="70%"
+					style="border-style: solid; border-width: 1px; background-color: #D6EBFC">Class
+					Name</th>
+				<th width="10%"
+					style="border-style: solid; border-width: 1px; background-color: #D6EBFC">Line
+					number</th>
+				<th width="10%"
+					style="border-style: solid; border-width: 1px; background-color: #D6EBFC">Coverage
+					Rate</th>
+				<th width="10%"
+					style="border-style: solid; border-width: 1px; background-color: #F6EBFC">Compliance
+					Rate</th>
+			</tr>
+			<tr>
+				<td style="border-style: solid; border-width: 1px;"><a
+					target="_blank"
+					href="http://jabdl3504.it:9000/dashboard/index/c001"> class1</a>
+				</td>
+				<td
+					style="border-style: solid; text-align: left; border-width: 1px;">
+					3</td>
+				<td
+					style="border-style: solid; text-align: left; border-width: 1px;">
+					33.33%</td>
+				<td style="border-style: solid; border-width: 1px;">0%</td>
+			</tr>
+		</table>
+	</div>
+	<br><table
+			style="border-style: ridge; border-width: 1px; width: 100%; border-spacing: 0px;"
+			cellpadding="0" cellspacing="0">
+			<tr>
+				<th
+					style="vertical-align: middle; text-align: center; font-family: Calibri; padding: 0px; margin: 0px; background-color: #005CA6; color: #FFFFFF; font-weight: bold; font-size: x-large;"style6">
+					&nbsp;</th>
+				<th
+					style="vertical-align: middle; text-align: center; font-family: Calibri; padding: 0px; margin: 0px; background-color: #005CA6; color: #FFFFFF; font-weight: bold; font-size: large;"
+					class="style5">Team ID</th>
+				<th
+					style="vertical-align: middle; text-align: center; font-family: Calibri; padding: 0px; margin: 0px; background-color: #005CA6; color: #FFFFFF; font-weight: bold; font-size: large;"
+					class="style7">Team Line Count</th>
+				<th
+					style="vertical-align: middle; text-align: center; font-family: Calibri; padding: 0px; margin: 0px; background-color: #005CA6; color: #FFFFFF; font-weight: bold; font-size: large;"
+					class="style4">Coverage Rate</th>
+				<th
+					style="vertical-align: middle; text-align: center; font-family: Calibri; padding: 0px; margin: 0px; background-color: #005CA6; color: #FFFFFF; font-weight: bold; font-size: large;">
+					Compliance Rate</th>
+			</tr>
+			<tr>
+				<td id="main2"
+					style="vertical-align: middle; text-align: center; font-family: Calibri; padding: 0px; margin: 0px; background-color: #FFFFFF;"><A
+					onclick="toggle(2, 'open')" class="style7"
+					href="javascript:void(0)">+</A> &nbsp;</td>
+				<td
+					style="vertical-align: middle; text-align: center; font-family: Calibri; padding: 0px; margin: 0px; background-color: #FFFFFF;">
+					Team:not_in_list</td>
+				<td
+					style="vertical-align: middle; text-align: center; font-family: Calibri; padding: 0px; margin: 0px; background-color: #FFFFFF;">
+					2</td>
+				<td
+					style="vertical-align: middle; text-align: center; font-family: Calibri; padding: 0px; margin: 0px; background-color: #FFFFFF; color: #008000;">
+					0.00%</td>
+				<td
+					style="vertical-align: middle; text-align: center; font-family: Calibri; padding: 0px; margin: 0px; background-color: #FFFFFF; color: #008000;">
+					100.00%</td>
+			</tr>
+		</table>
+		<div id=subItem1 style="display: none;">
+			<table align="center"
+				style="border-style: ridge; border-width: 1px; width: 98%;"
+				cellpadding="0" cellspacing="0">
+				<tr>
+					<th
+						style="vertical-align: middle; text-align: center; font-family: Calibri; padding: 0px; margin: 0px; background-color: #007CA6; color: #FFFFFF; font-weight: bold; font-size: medium;"style6">
+						&nbsp;</th>
+					<th
+						style="vertical-align: middle; text-align: center; font-family: Calibri; padding: 0px; margin: 0px; background-color: #007CA6; color: #FFFFFF; font-weight: bold; font-size: medium;"
+						class="style5">Emp ID</th>
+					<th
+						style="vertical-align: middle; text-align: center; font-family: Calibri; padding: 0px; margin: 0px; background-color: #007CA6; color: #FFFFFF; font-weight: bold; font-size: medium;"
+						class="style7">Emp Line Count</th>
+					<th
+						style="vertical-align: middle; text-align: center; font-family: Calibri; padding: 0px; margin: 0px; background-color: #007CA6; color: #FFFFFF; font-weight: bold; font-size: medium;"
+						class="style4">Coverage Rate</th>
+					<th
+						style="vertical-align: middle; text-align: center; font-family: Calibri; padding: 0px; margin: 0px; background-color: #007CA6; color: #FFFFFF; font-weight: bold; font-size: medium;">
+						Compliance Rate</th>
+				</tr>
+				<tr>
+					<td id="main"
+						style="vertical-align: middle; text-align: center; font-family: Calibri; padding: 0px; margin: 0px; background-color: #FFFFFF;">
+						&nbsp;</td>
+					<td
+						style="vertical-align: middle; text-align: center; font-family: Calibri; padding: 0px; margin: 0px; background-color: #FFFFFF;">
+						e002</td>
+					<td
+						style="vertical-align: middle; text-align: center; font-family: Calibri; padding: 0px; margin: 0px; background-color: #FFFFFF;">
+						2</td>
+					<td
+						style="vertical-align: middle; text-align: center; font-family: Calibri; padding: 0px; margin: 0px; background-color: #FFFFFF; color: #008000;">
+						0.00%</td>
+					<td
+						style="vertical-align: middle; text-align: center; font-family: Calibri; padding: 0px; margin: 0px; background-color: #FFFFFF; color: #008000;">
+						100.00%</td>
+				</tr>
+			</table>
+			<table align="center"
+				style="border-style: ridge; border-width: 2px; width: 97%;"
+				cellpadding="0" cellspacing="0">
+				<tr>
+					<th width="70%"
+						style="border-style: solid; border-width: 1px; background-color: #D6EBFC">Class
+						Name</th>
+					<th width="10%"
+						style="border-style: solid; border-width: 1px; background-color: #D6EBFC">Line
+						number</th>
+					<th width="10%"
+						style="border-style: solid; border-width: 1px; background-color: #D6EBFC">Coverage
+						Rate</th>
+					<th width="10%"
+						style="border-style: solid; border-width: 1px; background-color: #F6EBFC">Compliance
+						Rate</th>
+				</tr>
+				<tr>
+					<td style="border-style: solid; border-width: 1px;"><a
+						target="_blank"
+						href="http://jabdl3504.it:9000/dashboard/index/c001"> class1</a>
+					</td>
+					<td
+						style="border-style: solid; text-align: left; border-width: 1px;">
+						2</td>
+					<td
+						style="border-style: solid; text-align: left; border-width: 1px;">
+						0.00%</td>
+					<td style="border-style: solid; border-width: 1px;">100.00%</td>
+				</tr>
+			</table>
+		</div>
+		<br>
+			<p style="font-weight: bolder; text-align: center; margin-top: 30px">
+				GC-SAR (Sonar Analyze Report)</p>
+</body>
+</html>

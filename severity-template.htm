@@ -1,0 +1,34 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Sonar Report</title>
+        <style type="text/css">
+
+        </style>
+    </head>
+    <body style="font-family: 'Microsoft Sans Serif';">
+        <p style="font-family: 'Microsoft Sans Serif'; font-size: 30px; font-weight: bolder; height: 19px;">Sonar Severity Report</p>
+        <hr style="color: #800000"/>
+        <p style="font-family: 'Microsoft Sans Serif'; font-size: 24px; font-weight: bolder">
+            Summary
+            <div style="position: absolute; right: 20px; top: 90px; display: flex; font-size: 10px; background: #eee; padding: 2px; border-radius: 2px">
+                <span style="padding-left: 6px; padding-right: 6px; "><span style="padding-right: 3px">BLOCKER<span style="color: darkred;">(A)</span>:</span>-${blocker}</span>
+                <span style="padding-right: 6px"><span style="padding-right: 3px">CRITICAL<span style="color: red;">(B)</span>:</span>-${critical}</span>
+                <span style="padding-right: 6px"><span style="padding-right: 3px">MAJOR<span style="color: green;">(C)</span>:</span>-${major}</span>
+                <span style="padding-right: 6px"><span style="padding-right: 3px">MINOR<span style="color: #aaa;">(D)</span>:</span>-${minor}</span>
+                <span style="padding-right: 6px"><span style="padding-right: 3px">INFO<span style="color: #ccc;">(E)</span>:</span>-${info}</span>
+            </div>
+        </p>
+        <div id="summary-ct">
+            #SUMMARY_PART#
+        </div>
+        <p style="font-family: 'Microsoft Sans Serif'; font-size: 24px; font-weight: bolder;">Overview - Employee Severity Statistic</p>
+        <div id="detail-ct">
+            #DETAIL_PART#
+        </div>
+        <p style="font-weight:bolder; text-align:center; margin-top:30px; font-size: 12px">
+            <span>GC|GTM</span> - SAR <span>(Sonar Analyze Report)</span> - Limited Access</p>
+    </body>
+
+</html>

@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="gcth_config.xsd">
+	<framework name="sonar_report">
+		
+		<application name="sonarreport">
+		</application>
+		
+		<!--
+		<component name="sonarConnectionResource"
+                   class="com.statestr.gcth.ext.jdbc.c3p0.C3p0JdbcConnectionResource">
+            <property name="jdbcUrl">jdbc:oracle:thin:@10.1.114.205:1753:O05GCE0</property>
+            <property name="driverClass">oracle.jdbc.OracleDriver</property>
+            <property name="user">SONAR</property>
+            <property name="password">SONAR</property>
+            <property name="minPoolSize">1</property>
+            <property name="maxPoolSize">2</property>
+            <property name="acquireIncrement">1</property>
+            <property name="autoCommit">false</property>
+        </component>
+        -->
+
+
+        <component name="sonarConnectionResource"
+                   class="com.statestr.gcth.ext.jdbc.c3p0.C3p0JdbcConnectionResource">
+            <property name="jdbcUrl">jdbc:oracle:thin:@qdc05133-scan.it.statestr.com:1521/O05MTD0_JAB</property>
+            <property name="driverClass">oracle.jdbc.OracleDriver</property>
+            <property name="user">SONAR3</property>
+            <property name="password">SONAR3</property>
+            <property name="minPoolSize">1</property>
+            <property name="maxPoolSize">2</property>
+            <property name="acquireIncrement">1</property>
+            <property name="autoCommit">false</property>
+        </component>
+
+		<component name="sonarDao" class="com.ssc.dbcttool.dao.impl.OracleDbaDaoImpl">
+			<property name="connectionResource">prodConnectionResource</property>
+		</component>
+
+
+	</framework>
+</configuration>
+
