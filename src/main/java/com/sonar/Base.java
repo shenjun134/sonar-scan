@@ -22,7 +22,7 @@ public class Base {
 //            args = new String[]{"zeusui_trunk_quality", "2018-01-01", "2018-05-13", "v5.4", "BLANK", "30"};
 //            args = new String[]{"GTM_Job", "2018-01-01", "2018-03-01", "v5.4", "RSS", "30"};
 //            args = new String[]{"gcth-project-trunk-parent", "2018-01-01", "2018-05-01", "v5.4", "BLANK", "30"};
-//            args = new String[]{"gcth-application-parent", "2017-01-01", "2018-03-01", "v5.4", "BLANK", "20"};
+//            args = new String[]{"gcth-application-parent", "2011-01-01", "2018-03-01", "v5.4", "BLANK", "20"};
             process(args);
         } catch (Exception e) {
             logger.error("sonar report process error", e);

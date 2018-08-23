@@ -37,7 +37,7 @@ public class ScanResult {
     private int totalChangeClz;
 
     interface Constant {
-        String restTeam = "rest-members";
+        String restTeam = "members";
     }
 
 

@@ -1,7 +1,9 @@
 package com.sonar.service;
 
 import com.sonar.component.FetchComponent;
+import com.sonar.component.UTComponent;
 import com.sonar.component.impl.FetchComponentImpl;
+import com.sonar.component.impl.UTComponentImpl;
 import com.sonar.constant.SeverityEnum;
 import com.sonar.dao.SonarDao;
 import com.sonar.model.*;
@@ -27,6 +29,9 @@ public class ReportService {
     private ReportResult reportResult;
 
     private FetchComponent fetchComponent;
+
+
+    private UTComponent utComponent;
 
     private SonarDao sonarDao;
 
@@ -97,6 +102,11 @@ public class ReportService {
         ((FetchComponentImpl) fetchComponent).setSeverityList(tempSeverity.toString());
         ((FetchComponentImpl) fetchComponent).setTeamProperties(teamProperties);
 
+
+        if (sonarProperties.isEnableUTSucc()) {
+            utComponent = new UTComponentImpl(sonarProperties.getWebUser(), sonarProperties.getWebHost(), sonarProperties.getWebPassword());
+        }
+
     }
 
 
@@ -124,24 +134,41 @@ public class ReportService {
             return;
         }
 
-        Map<String, Long> allProject = sonarDao.getAllProject();
+        Map<String, ProjectDO> allProject = sonarDao.getAllProject();
         if (allProject == null || allProject.size() == 0) {
             return;
         }
         for (String pro : proArr) {
             String temp = StringUtils.trim(pro);
-            Long projectId = allProject.get(temp);
-            if (projectId == null) {
+            ProjectDO project = allProject.get(temp);
+            if (project == null) {
                 logger.warn("no project find for - " + temp);
                 continue;
             }
-            reportResult.getProjectMap().put(temp, "" + projectId);
-            fetchClassList("" + projectId);
+            reportResult.getProjectMap().put(temp, "" + project);
+            fetchClassList("" + project.getId());
         }
         reportResult.setTotalChangeClz(reportResult.getScanResult().getClazzResultList().size());
         reportResult.setTotalChangeAuthor(reportResult.getScanResult().getAuthorMapList().size());
         reportResult.getScanResult().calcTotal(reportResult.getPickedTeam(), teamProperties);
         reportResult.getScanResult().printTotal();
+
+
+        if (sonarProperties.isEnableUTSucc()) {
+            for (String pro : proArr) {
+                String temp = StringUtils.trim(pro);
+                ProjectDO project = allProject.get(temp);
+                if (project == null) {
+                    logger.warn("no project find for - " + temp);
+                    continue;
+                }
+                ProjectUTDO projectUTDO = utComponent.queryUTList(project);
+                reportResult.getProjectUTMap().put(projectUTDO.getId(), projectUTDO);
+            }
+
+
+        }
+
     }
 
 

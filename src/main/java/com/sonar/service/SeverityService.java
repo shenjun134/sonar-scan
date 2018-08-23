@@ -98,18 +98,18 @@ public class SeverityService {
      *
      */
     private void doProcess() {
-        Map<String, Long> allProject = sonarDao.getAllProject();
+        Map<String, ProjectDO> allProject = sonarDao.getAllProject();
         if (allProject == null || allProject.size() == 0) {
             return;
         }
         for (String pro : projectList) {
             String temp = StringUtils.trim(pro);
-            Long projectId = allProject.get(temp);
-            if (projectId == null) {
+            ProjectDO project = allProject.get(temp);
+            if (project == null) {
                 logger.warn("no project find for - " + temp);
                 continue;
             }
-            fetchProjectIssue("" + projectId);
+            fetchProjectIssue("" + project.getId());
         }
         severityResult.analysis();
         severityResult.print();

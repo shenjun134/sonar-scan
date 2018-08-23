@@ -4,7 +4,7 @@
     <head>
         <title>Sonar Report</title>
         <style type="text/css">
-
+            .author-detail table tr:nth-child(2n+1){background: #eee}
         </style>
     </head>
     <body style="font-family: 'Microsoft Sans Serif';">
@@ -12,15 +12,21 @@
         <hr style="color: #800000"/>
         <p style="font-family: 'Microsoft Sans Serif'; font-size: 24px; font-weight: bolder">
             Summary
-            <div style="position: absolute; right: 10px; top: 60px; display: flex; font-size: 10px; background: #eee; padding: 2px; border-radius: 2px">
+            <div style="position: absolute; right: 10px; top: 20px; display: flex; font-size: 10px; background: #eee; padding: 2px; border-radius: 2px">
                 <span style="padding-left: 6px; padding-right: 6px; "><span style="padding-right: 3px">BLOCKER<span style="color: darkred;">(A)</span>:</span>-${blocker}</span>
                 <span style="padding-right: 6px"><span style="padding-right: 3px">CRITICAL<span style="color: red;">(B)</span>:</span>-${critical}</span>
                 <span style="padding-right: 6px"><span style="padding-right: 3px">MAJOR<span style="color: green;">(C)</span>:</span>-${major}</span>
                 <span style="padding-right: 6px"><span style="padding-right: 3px">MINOR<span style="color: #aaa;">(D)</span>:</span>-${minor}</span>
                 <span style="padding-right: 6px"><span style="padding-right: 3px">INFO<span style="color: #ccc;">(E)</span>:</span>-${info}</span>
             </div>
-            <div style="position: absolute; right: 10px; top: 80px; display: flex; font-size: 10px; background: #eee; padding: 2px; padding-right: 6px; border-radius: 2px">
+            <div style="position: absolute; right: 10px; top: 40px; display: flex; font-size: 10px; background: #eee; padding: 2px; padding-right: 6px; border-radius: 2px">
                 <span style="font-weight: bold;">Covered:&nbsp;&nbsp;</span><span>total line of UT hit + total line of no need UT hit</span>
+            </div>
+            <div style="position: absolute; right: 10px; top: 60px; display: flex; font-size: 10px; background: #eee; padding: 2px; padding-right: 6px; border-radius: 2px">
+                <span style="font-weight: bold;">Optimistic Coverage:&nbsp;&nbsp;</span><span>(Covered UT + Covered Branch + Static)/(Total UT + Total Branch + Static)</span>
+            </div>
+            <div style="position: absolute; right: 10px; top: 80px; display: flex; font-size: 10px; background: #eee; padding: 2px; padding-right: 6px; border-radius: 2px">
+                <span style="font-weight: bold;">Real Coverage:&nbsp;&nbsp;</span><span>(Covered UT + Covered Branch)/(Total UT + Total Branch)</span>
             </div>
             <div style="position: absolute; right: 10px; top: 100px; display: flex; font-size: 10px; background: #eee; padding: 2px; padding-right: 6px; border-radius: 2px">
                 <span  style="font-weight: bold"><a href="https://docs.sonarqube.org/display/SONAR/Metric+definitions#Metricdefinitions-Tests" target="_blank">Coverage%</a>:&nbsp;&nbsp;</span><span>(CT + CF + LC)/(2*B + EL)</span>

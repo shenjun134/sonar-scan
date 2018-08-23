@@ -1,6 +1,8 @@
 package com.sonar.model;
 
 public class ClazzDO {
+    private String projectId;
+
     private String id;
 
     private String key;
@@ -40,10 +42,19 @@ public class ClazzDO {
         this.name = name;
     }
 
+    public String getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(String projectId) {
+        this.projectId = projectId;
+    }
+
     @Override
     public String toString() {
         return "ClazzDO{" +
-                "id='" + id + '\'' +
+                "projectId=" + projectId +
+                ", id='" + id + '\'' +
                 ", key='" + key + '\'' +
                 ", name='" + name + '\'' +
                 '}';

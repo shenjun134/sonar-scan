@@ -1,6 +1,7 @@
 package com.sonar.dao;
 
 import com.sonar.model.ClazzDO;
+import com.sonar.model.ProjectDO;
 import com.sonar.model.SonarProperties;
 import com.sonar.util.DbUtil;
 import oracle.jdbc.OracleStatement;
@@ -26,9 +27,9 @@ public class SonarDao {
             "select id from projects where root_id = :projectId and scope = 'PRJ' or id in (:projectId))";
 
 
-    private static final String QUERY_FILE_LIST_SKIP_TEST_PART = " and kee not like '%test/java%'";
+    private static final String QUERY_FILE_LIST_SKIP_TEST_PART = " and kee not like '%test/%'";
 
-    private static final String QUERY_PROJECTS = "SELECT REGEXP_REPLACE(name,' ' ,'_') name, id  FROM  projects where scope = 'PRJ' and path is null";
+    private static final String QUERY_PROJECTS = "SELECT REGEXP_REPLACE(name,' ' ,'_') name, id, kee  FROM  projects where scope = 'PRJ' and path is null";
 
 
     private SonarProperties sonarProperties;
@@ -60,7 +61,9 @@ public class SonarDao {
                 String name = rs.getString("name");
                 String kee = rs.getString("kee");
                 String id = rs.getString("id");
-                list.add(new ClazzDO(id, kee, name));
+                ClazzDO clazzDO = new ClazzDO(id, kee, name);
+                clazzDO.setProjectId(projectId);
+                list.add(clazzDO);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -84,11 +87,11 @@ public class SonarDao {
     }
 
 
-    public Map<String, Long> getAllProject() {
+    public Map<String, ProjectDO> getAllProject() {
         OracleConnection rawOracleConn = (OracleConnection) new DbUtil(sonarProperties).getCon();
         String exeSql = QUERY_PROJECTS;
         OracleStatement st = null;
-        Map<String, Long> projects = new HashMap<String, Long>();
+        Map<String, ProjectDO> projects = new HashMap<String, ProjectDO>();
 
         try {
             st = (OracleStatement) rawOracleConn.createStatement();
@@ -97,7 +100,9 @@ public class SonarDao {
             while (rs.next()) {
                 String name = rs.getString("name");
                 Long id = rs.getLong("id");
-                projects.put(name, id);
+                String kee = rs.getString("kee");
+
+                projects.put(name, new ProjectDO(name, kee, id));
             }
         } catch (Exception e) {
             logger.error(" getAllProject error", e);

@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-public class FetchComponentImpl implements FetchComponent {
+public class FetchComponentImpl extends AbstractComponent implements FetchComponent {
 
     /**
      * logger
@@ -32,19 +32,12 @@ public class FetchComponentImpl implements FetchComponent {
         int retryTimes = 5;
     }
 
-    private String webUser;
-
-    private String webHost;
-
-    private String webPassword;
 
     private Date beginDate;
 
     private Date endDate;
 
     private String severityList;
-
-    private JdkUtils util;
 
     private TeamProperties teamProperties;
 
@@ -141,33 +134,6 @@ public class FetchComponentImpl implements FetchComponent {
 
     /*********************************************************private****************************************************/
 
-    /**
-     * @param url
-     * @param connector
-     * @return
-     */
-    private String httpGet(String url, HttpClient4Connector connector) {
-        logger.info("begin to get - " + url);
-        Exception error;
-        int retryCount = 0;
-        do {
-            try {
-                HttpGet request = new HttpGet(url);
-                request.setHeader("Accept", "application/json");
-                return connector.executeRequest(request);
-            } catch (Exception e) {
-                error = e;
-                retryCount++;
-            }
-            try {
-                Thread.sleep(200L);
-            } catch (InterruptedException e) {
-                logger.error("thread InterruptedException error", e);
-            }
-        } while (retryCount < Constant.retryTimes);
-        logger.warn("http get fail - " + url, error);
-        return null;
-    }
 
     /**
      * @param clazz
@@ -178,6 +144,7 @@ public class FetchComponentImpl implements FetchComponent {
         authorResult.setClazz(clazz.getName());
         authorResult.setComponentId(clazz.getId());
         authorResult.setComponentKey(clazz.getKey());
+        authorResult.setProjectId(clazz.getProjectId());
         return authorResult;
     }
 
@@ -524,17 +491,6 @@ public class FetchComponentImpl implements FetchComponent {
 
 
     /**********************************************************setter****************************************************/
-    public void setWebUser(String webUser) {
-        this.webUser = webUser;
-    }
-
-    public void setWebHost(String webHost) {
-        this.webHost = webHost;
-    }
-
-    public void setWebPassword(String webPassword) {
-        this.webPassword = webPassword;
-    }
 
     public void setBeginDate(Date beginDate) {
         this.beginDate = beginDate;

@@ -19,6 +19,8 @@ public class ClazzResult {
 
     private List<IssueResult> issueResultList = new ArrayList<>();
 
+    private List<String> authorList = new ArrayList<>();
+
     private int totalLine;
 
     private int totalChangeLine;
@@ -101,6 +103,14 @@ public class ClazzResult {
         this.totalCoveredLine = totalCoveredLine;
     }
 
+    public List<String> getAuthorList() {
+        return authorList;
+    }
+
+    public void setAuthorList(List<String> authorList) {
+        this.authorList = authorList;
+    }
+
     @Override
     public String toString() {
         return "ClazzResult{" +
@@ -109,6 +119,7 @@ public class ClazzResult {
                 ", componentKey='" + componentKey + '\'' +
                 ", lineResultList=" + lineResultList +
                 ", issueResultList=" + issueResultList +
+                ", authorList=" + authorList +
                 ", totalLine=" + totalLine +
                 ", totalChangeLine=" + totalChangeLine +
                 ", totalCoveredLine=" + totalCoveredLine +

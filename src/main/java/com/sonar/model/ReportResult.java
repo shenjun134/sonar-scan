@@ -1,9 +1,10 @@
 package com.sonar.model;
 
+import org.apache.commons.lang.math.NumberUtils;
+
 import java.util.*;
 
 public class ReportResult {
-
 
     private Map<String, String> projectMap = new HashMap<>();
 
@@ -35,6 +36,38 @@ public class ReportResult {
 
     private String severityList;
 
+    private Map<Long, ProjectUTDO> projectUTMap = new HashMap<>();
+
+
+    /**
+     * @param projectIdStr
+     * @param componentKee
+     * @return
+     */
+    public UTDO fetchUT(String projectIdStr, String componentKee) {
+        Long projectId = NumberUtils.toLong(projectIdStr, 0);
+        ProjectUTDO projectUT = projectUTMap.get(projectId);
+        if (projectUT != null) {
+            return projectUT.getComponentMap().get(componentKee);
+        }
+        return null;
+    }
+
+    public double calcTotalRate() {
+        double totalRate = 0;
+        double totalCount = 0;
+        for (ProjectUTDO projectUTDO : projectUTMap.values()) {
+            int size = projectUTDO.getComponentMap().size();
+            float rate = projectUTDO.getBaseComponent() == null ? 0 : projectUTDO.getBaseComponent().getSuccRate();
+            totalCount = totalCount + size;
+            totalRate = totalRate + rate * size;
+        }
+        if (totalCount == 0) {
+            return 0.00d;
+        }
+        return totalRate / totalCount;
+    }
+
 
     public Map<String, String> getProjectMap() {
         return projectMap;
@@ -60,7 +93,7 @@ public class ReportResult {
         this.totalLine = this.totalLine + totalLine;
     }
 
-    public void addTotalCoveredLine(int totalCoveredLine){
+    public void addTotalCoveredLine(int totalCoveredLine) {
         this.totalCoveredLine = this.totalCoveredLine + totalCoveredLine;
     }
 
@@ -177,6 +210,14 @@ public class ReportResult {
         this.totalCoveredLine = totalCoveredLine;
     }
 
+    public Map<Long, ProjectUTDO> getProjectUTMap() {
+        return projectUTMap;
+    }
+
+    public void setProjectUTMap(Map<Long, ProjectUTDO> projectUTMap) {
+        this.projectUTMap = projectUTMap;
+    }
+
     @Override
     public String toString() {
         return "ReportResult{" +
@@ -195,6 +236,7 @@ public class ReportResult {
                 ", threadCount=" + threadCount +
                 ", skipTest=" + skipTest +
                 ", severityList='" + severityList + '\'' +
+                ", projectUTMap=" + (projectUTMap == null ? 0 : projectUTMap.size()) +
                 '}';
     }
 }

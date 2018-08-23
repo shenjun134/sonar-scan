@@ -1,6 +1,7 @@
 package com.sonar.model;
 
 import com.sonar.constant.SeverityEnum;
+import com.sonar.util.CoverageUtil;
 import org.apache.log4j.Logger;
 
 import java.text.DecimalFormat;
@@ -21,6 +22,8 @@ public class AuthorResult {
     private String componentId;
 
     private String componentKey;
+
+    private String projectId;
 
     /**
      * total commit line
@@ -327,17 +330,7 @@ public class AuthorResult {
      * @return
      */
     public double calcCoverage() {
-        double willCovered = totalUtLine + totalStaticLine + totalUtConditions;
-        if (willCovered == 0.0) {
-            this.coverage = 100.00;
-            logger.info("coverage: 0, " + this);
-            return this.coverage;
-        }
-        double covered = totalUtLineHits + totalUtCoveredConditions + totalStaticLine;
-        if(covered == 0.0){
-            logger.info("coverage: 0, " + this);
-        }
-        this.coverage = ((double) Math.round(covered * 10000 / willCovered)) / 100;
+        this.coverage = CoverageUtil.newInstance().coverage(this);
         return this.coverage;
     }
 
@@ -355,6 +348,13 @@ public class AuthorResult {
         return this.compliance;
     }
 
+    public String getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(String projectId) {
+        this.projectId = projectId;
+    }
 
     @Override
     public String toString() {
@@ -363,6 +363,7 @@ public class AuthorResult {
                 ", clazz='" + clazz + '\'' +
                 ", componentId='" + componentId + '\'' +
                 ", componentKey='" + componentKey + '\'' +
+                ", projectId='" + projectId + '\'' +
                 ", totalLine=" + totalLine +
                 ", totalCoveredLine=" + totalCoveredLine +
                 ", totalUtLine=" + totalUtLine +

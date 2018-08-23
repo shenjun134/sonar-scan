@@ -1,19 +1,18 @@
 package com.sonar.service;
 
 import com.sonar.constant.SeverityEnum;
-import com.sonar.model.AuthorResult;
-import com.sonar.model.ReportResult;
-import com.sonar.model.SonarProperties;
-import com.sonar.model.TeamProperties;
+import com.sonar.model.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.log4j.Logger;
 
 import java.io.*;
 import java.text.DecimalFormat;
 import java.util.*;
 
 public class HtmlService {
+    private static final Logger logger = Logger.getLogger(HtmlService.class);
     private SonarProperties sonarProperties;
     private TeamProperties teamProperties;
     private ReportResult reportResult;
@@ -32,6 +31,7 @@ public class HtmlService {
     }
 
     public void generateReport() throws IOException {
+        logger.info("begin to generateReport - " + reportResult);
         String path = System.getProperty("user.dir");
         BufferedReader htmlTemplate = null;
         StringBuilder template = new StringBuilder();
@@ -87,7 +87,23 @@ public class HtmlService {
         temp = temp.replace("${startTime}", begin);
         temp = temp.replace("${endTime}", end);
         temp = temp.replace("${totalCoverage}", buildCoverageRate(reportResult.getScanResult().getTotal().getCoverage(), "left"));
-        temp = temp.replace("${totalCompliance}", "" + totalCompliance);
+
+        String optionName = "Compliance";
+        String optionValue = "" + totalCompliance + "%";
+        if (sonarProperties.isEnableUTSucc()) {
+            optionName = "Unit Test Succ%";
+            double rate = reportResult.calcTotalRate();
+            String bgColor = "#fff";
+            String color = "#000";
+            if (rate < 100) {
+                bgColor = "#d4333f";
+                color = "#fff";
+            }
+            optionValue = "<div style='width: 100%; height: 100%; text-align: center; color: " + color + ";background: " + bgColor + ";'>" + Constant.twoDForm.format(reportResult.calcTotalRate()) + "%</div>";
+        }
+        temp = temp.replace("${optionName}", optionName);
+        temp = temp.replace("${totalOption}", optionValue);
+
         temp = temp.replace("${totalFile}", "" + totalFile);
         temp = temp.replace("${totalLine}", "" + totalLine);
         temp = temp.replace("${totalChangeFile}", "" + totalChangeFile);
@@ -127,11 +143,20 @@ public class HtmlService {
         int teamCoveredLine = teamResult.getTotalCoveredLine();
         String teamCompliance = Constant.twoDForm.format(teamResult.getCompliance());
         String temp = Template.team;
+
+        String optionName = "Compliance";
+        String optionValue = "" + teamCompliance + "%";
+        if (sonarProperties.isEnableUTSucc()) {
+            optionName = "";
+            optionValue = "";
+        }
+
         StringBuilder severityInfo = buildSeverity(teamResult);
         temp = temp.replace("${teamId}", teamInfo + severityInfo.toString());
         temp = temp.replace("${teamTotalLineNumber}", "" + teamCoveredLine + "/" + teamLine);
         temp = temp.replace("${teamCoverageRate}", buildCoverageRate(teamResult.getCoverage(), "center"));
-        temp = temp.replace("${teamComplianceRate}", "" + teamCompliance);
+        temp = temp.replace("${teamOptionValue}", optionValue);
+        temp = temp.replace("${optionName}", optionName);
 
         stringBuilder.append(temp);
 
@@ -162,24 +187,33 @@ public class HtmlService {
                 compliance = authorResult.getCompliance();
                 lineCount = authorResult.getTotalLine();
                 coveredLine = authorResult.getTotalCoveredLine();
-                if (authorResult.getBlock() > 0) {
-                    levelColor = "darkred";
-                } else if (authorResult.getCritical() > 0) {
-                    levelColor = "red";
+                if (!sonarProperties.isEnableUTSucc()) {
+                    if (authorResult.getBlock() > 0) {
+                        levelColor = "#d4333f";
+                    } else if (authorResult.getCritical() > 0) {
+                        levelColor = "red";
+                    }
                 }
-
             }
             if (CollectionUtils.isNotEmpty(authorClzResult)) {
                 fileCount = authorClzResult.size();
             }
             StringBuilder severityInfo = buildSeverity(authorResult);
             String temp = Template.authorSummary;
+            String optionName = "Compliance";
+            String optionValue = Constant.twoDForm.format(compliance) + "%";
+            if (sonarProperties.isEnableUTSucc()) {
+                optionName = "";
+                optionValue = "";
+            }
+
             temp = temp.replace("${levelColor}", levelColor);
             temp = temp.replace("${empId}", teamProperties.convert2EmployInfo(member) + severityInfo.toString());
             temp = temp.replace("${fileCount}", "" + fileCount);
             temp = temp.replace("${empTotalLineNumber}", "" + coveredLine + "/" + lineCount);
             temp = temp.replace("${empCoverageRate}", buildCoverageRate(coverage, "center"));
-            temp = temp.replace("${empComplianceRate}", "" + Constant.twoDForm.format(compliance));
+            temp = temp.replace("${empOptionValue}", optionValue);
+            temp = temp.replace("${optionName}", optionName);
 
             stringBuilder.append(temp);
             stringBuilder.append("<div class=\"author-detail\">");
@@ -195,10 +229,17 @@ public class HtmlService {
         if (CollectionUtils.isEmpty(authorClzResult)) {
             return Template.noClass;
         }
+        String optionName = "Compliance";
+        if (sonarProperties.isEnableUTSucc()) {
+            optionName = "Unit Test Succ%";
+        }
+        String header = StringUtils.replace(Template.classHeader, "${optionName}", optionName);
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(Template.classHeader);
+        stringBuilder.append(header);
         String linkBase = sonarProperties.getWebHost() + "/dashboard/index/";
+        int i = 0;
         for (AuthorResult authorResult : authorClzResult) {
+            i++;
             String classNameTag = linkBase + authorResult.getComponentId();
             String className = authorResult.getClazz();
             int lineCount = authorResult.getTotalLine();
@@ -207,15 +248,33 @@ public class HtmlService {
             double compliance = authorResult.getCompliance();
             StringBuilder severityInfo = buildSeverity(authorResult);
             String temp = Template.classRow;
-            if (authorResult.getBlock() > 0) {
-                temp = temp.replace("${levelColor}", "darkred");
-                temp = temp.replace("${level}", "color: darkred");
-            } else if (authorResult.getCritical() > 0) {
-                temp = temp.replace("${levelColor}", "red");
-                temp = temp.replace("${level}", "color: red");
+            String clzRowStyle = i % 2 == 0 ? "background: #fff;" : "background: #eee;";
+            String optionValue = Constant.twoDForm.format(compliance);
+
+            if (!sonarProperties.isEnableUTSucc()) {
+                if (authorResult.getBlock() > 0) {
+                    temp = temp.replace("${levelColor}", "#d4333f");
+                    temp = temp.replace("${level}", "color: #d4333f");
+                } else if (authorResult.getCritical() > 0) {
+                    temp = temp.replace("${levelColor}", "red");
+                    temp = temp.replace("${level}", "color: red");
+                } else {
+                    temp = temp.replace("${levelColor}", "#222");
+                    temp = temp.replace("${level}", "");
+                }
             } else {
-                temp = temp.replace("${levelColor}", "#222");
-                temp = temp.replace("${level}", "");
+                UTDO utdo = utSuccRate(authorResult, reportResult);
+                optionValue = toString(utdo);
+                if (utdo == null) {
+                    temp = temp.replace("${levelColor}", "#F39C12");
+                    temp = temp.replace("${level}", "color: #F39C12");
+                } else if (utdo.getSuccRate() < 100) {
+                    temp = temp.replace("${levelColor}", "red");
+                    temp = temp.replace("${level}", "color: red");
+                } else {
+                    temp = temp.replace("${levelColor}", "#222");
+                    temp = temp.replace("${level}", "");
+                }
             }
 
             temp = temp.replace("${link}", classNameTag);
@@ -223,11 +282,34 @@ public class HtmlService {
             temp = temp.replace("${severityInfo}", severityInfo.toString());
             temp = temp.replace("${classLineNumber}", "" + coveredLine + "/" + lineCount);
             temp = temp.replace("${classCoverageRate}", buildCoverageRate(coverage, "right"));
-            temp = temp.replace("${classComplianceRate}", "" + Constant.twoDForm.format(compliance));
+            temp = temp.replace("${classOptionValue}", optionValue);
+            temp = temp.replace("${clzRowStyle}", clzRowStyle);
             stringBuilder.append(temp);
         }
         stringBuilder.append(Template.tableEnd);
         return stringBuilder.toString();
+    }
+
+    private String toString(UTDO utdo) {
+        if (utdo == null) {
+            return "N/A";
+        }
+        String rate = Constant.twoDForm.format(utdo.getSuccRate());
+        return rate;
+//        String color = "#222";
+//        if (utdo.getFailure() > 0) {
+//            color = "red";
+//        }
+//        return "<span style='color: " + color + ";'>" + utdo.getFailure() + "</span>/<span style='color: #222; padding-right: 10px'>" + utdo.getTotal() + "</span>" + rate;
+    }
+
+
+    private UTDO utSuccRate(AuthorResult authorResult, ReportResult reportResult) {
+        return reportResult.fetchUT(authorResult.getProjectId(), authorResult.getComponentKey());
+//        if (utdo == null) {
+//            return "N/A";
+//        }
+//        return "" + utdo.getSuccRate();
     }
 
     private String buildCoverageRate(double coverage, String align) {
@@ -328,8 +410,8 @@ public class HtmlService {
                 "                <td>${projectName}</td>\n" +
                 "                <td style=\"background: #D6EBFC\">Total Coverage</td>\n" +
                 "                <td>${totalCoverage}</td>\n" +
-                "                <td style=\"background: #D6EBFC\">Total Compliance</td>\n" +
-                "                <td>${totalCompliance}%</td>\n" +
+                "                <td style=\"background: #D6EBFC\">Total ${optionName}</td>\n" +
+                "                <td>${totalOption}</td>\n" +
                 "            </tr>\n" +
                 "            <tr>\n" +
                 "                <td style=\"background: #D6EBFC\"> Start Time</td>\n" +
@@ -359,13 +441,13 @@ public class HtmlService {
                 "                    <th width=\"25%\" style=\"vertical-align: middle; text-align: center; font-family: Calibri; padding: 0px; padding-right: 10px; margin: 0px; background: #005CA6; color: #FFFFFF; font-weight: bold; font-size: large;\">\n" +
                 "                        Coverage</th>\n" +
                 "                    <th width=\"25%\" style=\"vertical-align: middle; text-align: right; font-family: Calibri; padding: 0px; padding-right: 10px; margin: 0px; background: #005CA6; color: #FFFFFF; font-weight: bold; font-size: large;\">\n" +
-                "                        Compliance</th>\n" +
+                "                        ${optionName}</th>\n" +
                 "                </tr>\n" +
                 "                <tr>\n" +
                 "                    <td width=\"25%\" style=\"vertical-align: middle; text-align: center; font-family: Calibri; padding: 0px; margin: 0px; background: #FFFFFF;\"> ${teamId}</td>\n" +
                 "                    <td width=\"25%\" style=\"vertical-align: middle; text-align: right; font-family: Calibri; padding: 0px; padding-right: 20px; margin: 0px; background: #FFFFFF;\"> ${teamTotalLineNumber}</td>\n" +
                 "                    <td width=\"25%\" style=\"vertical-align: middle; text-align: right; font-family: Calibri; padding: 0px; padding-right: 0px; margin: 0px; background: #FFFFFF;\"> ${teamCoverageRate}</td>\n" +
-                "                    <td width=\"25%\" style=\"vertical-align: middle; text-align: right; font-family: Calibri; padding: 0px; padding-right: 20px; margin: 0px; background: #FFFFFF; color: #008000;\"> ${teamComplianceRate}%</td>\n" +
+                "                    <td width=\"25%\" style=\"vertical-align: middle; text-align: right; font-family: Calibri; padding: 0px; padding-right: 20px; margin: 0px; background: #FFFFFF; color: #008000;\"> ${teamOptionValue}</td>\n" +
                 "                </tr>\n" +
                 "            </table>";
 
@@ -376,14 +458,14 @@ public class HtmlService {
                 "                        <th style=\"vertical-align: middle; text-align: right; font-family: Calibri; padding: 0px;  padding-right: 10px; margin: 0px; background: #007CA6; color: #FFFFFF; font-weight: bold; font-size: 14px;\">File Count</th>\n" +
                 "                        <th style=\"vertical-align: middle; text-align: right; font-family: Calibri; padding: 0px; padding-right: 10px; margin: 0px; background: #007CA6; color: #FFFFFF; font-weight: bold; font-size: 14px;\">Covered/Line Count</th>\n" +
                 "                        <th style=\"vertical-align: middle; text-align: center; font-family: Calibri; padding: 0px;padding-right: 10px;  margin: 0px; background: #007CA6; color: #FFFFFF; font-weight: bold; font-size: 14px;\">Coverage</th>\n" +
-                "                        <th style=\"vertical-align: middle; text-align: right; font-family: Calibri; padding: 0px; padding-right: 10px; margin: 0px; background: #007CA6; color: #FFFFFF; font-weight: bold; font-size: 14px;\">Compliance</th>\n" +
+                "                        <th style=\"vertical-align: middle; text-align: right; font-family: Calibri; padding: 0px; padding-right: 10px; margin: 0px; background: #007CA6; color: #FFFFFF; font-weight: bold; font-size: 14px;\">${optionName}</th>\n" +
                 "                    </tr>\n" +
                 "                    <tr>\n" +
                 "                        <td style=\"vertical-align: middle; text-align: left; font-family: Calibri; padding-left: 20px; margin: 0px; background: #FFFFFF;\">${empId}</td>\n" +
                 "                        <td style=\"vertical-align: middle; text-align: right; font-family: Calibri; padding: 0px; padding-right: 20px; margin: 0px; background: #FFFFFF;\"> ${fileCount}</td>\n" +
                 "                        <td style=\"vertical-align: middle; text-align: right; font-family: Calibri; padding: 0px; padding-right: 20px; margin: 0px; background: #FFFFFF;\"> ${empTotalLineNumber}</td>\n" +
                 "                        <td style=\"vertical-align: middle; text-align: right; font-family: Calibri; padding: 0px; padding-right: 0px; margin: 0px; background: #FFFFFF;\"> ${empCoverageRate}</td>\n" +
-                "                        <td style=\"vertical-align: middle; text-align: right; font-family: Calibri; padding: 0px; padding-right: 20px; margin: 0px; background: #FFFFFF; color: ${levelColor};\"> ${empComplianceRate}%</td>\n" +
+                "                        <td style=\"vertical-align: middle; text-align: right; font-family: Calibri; padding: 0px; padding-right: 20px; margin: 0px; background: #FFFFFF; color: ${levelColor};\"> ${empOptionValue}</td>\n" +
                 "                    </tr>\n" +
                 "                </table>";
 
@@ -392,14 +474,14 @@ public class HtmlService {
                 "                            <th width=\"60%\" style=\"border-style: solid; border-width: 1px; font-size: 12px; background: #D6EBFC\">Class Name</th>\n" +
                 "                            <th width=\"10%\" style=\"border-style: solid; border-width: 1px; font-size: 12px; background: #D6EBFC\">Covered/Line Count</th>\n" +
                 "                            <th width=\"20%\" style=\"border-style: solid; border-width: 1px; font-size: 12px; background: #D6EBFC\">Coverage</th>\n" +
-                "                            <th width=\"10%\" style=\"border-style: solid; border-width: 1px; font-size: 12px; background: #F6EBFC\">Compliance</th>\n" +
+                "                            <th width=\"10%\" style=\"border-style: solid; border-width: 1px; font-size: 12px; background: #D6EBFC\">${optionName}</th>\n" +
                 "                        </tr>";
 
-        String classRow = "<tr>\n" +
+        String classRow = "<tr style='${clzRowStyle}'>\n" +
                 "                            <td style=\"border-style: solid; border-width: 1px; font-size: 12px;  padding-left: 20px;\"><a target=\"_blank\" href=\"${link}\" style=\"${level}\">${className}</a>${severityInfo}</td>\n" +
                 "                            <td style=\"border-style: solid; text-align: right; padding-right: 20px; border-width: 1px; font-size: 12px; color: #222;\">${classLineNumber}</td>\n" +
                 "                            <td style=\"border-style: solid; text-align: right; padding-right: 0px; border-width: 1px; font-size: 12px; color: #222; \">${classCoverageRate}</td>\n" +
-                "                            <td style=\"border-style: solid; text-align: right; padding-right: 20px; border-width: 1px; font-size: 12px; color: ${levelColor}; \" >${classComplianceRate}%</td>\n" +
+                "                            <td style=\"border-style: solid; text-align: right; padding-right: 20px; border-width: 1px; font-size: 12px; color: ${levelColor}; \" >${classOptionValue}%</td>\n" +
                 "                        </tr>";
 
         String tableEnd = "</table>";
@@ -410,17 +492,17 @@ public class HtmlService {
 
 
         String severityCt = " <code style=\"margin-left: 10px;\">";
-        String utAndBranchCt = " <code style=\"margin-left: 5px;\">";
+        String utAndBranchCt = " <code style=\"margin-left: 5px; background: #bbb; padding-left: 10px;\">";
         String severityCtEnd = " </code>";
         String utAndBranchCtEnd = " </code>";
-        String blocker = "<span style=\"color: darkred; margin-right: 0px;\">Blocker:${count}</span>";
+        String blocker = "<span style=\"color: #d4333f; margin-right: 0px;\">Blocker:${count}</span>";
         String critical = "<span style=\"color: red; margin-right: 0px;\">Critical:${count}</span>";
         String major = "<span style=\"color: green; margin-right: 0px;\">Major:${count}</span>";
-        String minor = "<span style=\"color: #aaa; margin-right: 0px;\">Minor:${count}</span>";
-        String info = "<span style=\"color: #ccc; margin-right: 0px;\">Info:${count}</span>";
-        String ut = "<span style=\"color: #555; margin-right: 0px;\">UT:${count}</span>";
-        String branch = "<span style=\"color: #555; margin-right: 0px;\">Branch:${count}</span>";
-        String staticArea = "<span style=\"color: #555; margin-right: 0px;\">Static:${count}</span>";
+        String minor = "<span style=\"color: #555; margin-right: 0px;\">Minor:${count}</span>";
+        String info = "<span style=\"color: #aaa; margin-right: 0px;\">Info:${count}</span>";
+        String ut = "<span style=\"color: #fff; margin-right: 0px;\">UT:${count}</span>";
+        String branch = "<span style=\"color: #fff; margin-right: 0px;\">Branch:${count}</span>";
+        String staticArea = "<span style=\"color: #fff; margin-right: 0px;\">Static:${count}</span>";
 
 //        String coverageInner = "<div style=\"width: 100%; height: 12px; border-radius: 4px; background: #ddd; \">" +
 //                "<div style=\"width: ${coveragePer}; height: 12px; border-radius: 4px; background: ${coverageColor};\"></div>" +

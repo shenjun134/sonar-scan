@@ -1,5 +1,7 @@
 package com.sonar.model;
 
+import com.sonar.constant.CoverageOptionEnum;
+import com.sonar.util.CoverageUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -33,6 +35,10 @@ public class SonarProperties {
     private String severityTemplate;
 
     private Properties properties = new Properties();
+
+    private boolean enableUTSucc;
+
+    private CoverageOptionEnum coverageOptionEnum = CoverageOptionEnum.REAL;
 
 
     public SonarProperties() {
@@ -106,10 +112,32 @@ public class SonarProperties {
                 logger.error("load sonar-config properties fail without - html.severity.template");
             }
 
+            enableUTSucc = Boolean.valueOf(prop.getProperty("ut.success.rate.enable"));
+
+            this.setCoverageOptionEnum(prop);
+
+            CoverageUtil.init(coverageOptionEnum);
+
+
             logger.info("load sonar-config properties finished - " + this);
         } catch (IOException e) {
             logger.error("load sonar-config properties error", e);
             System.exit(1);
+        }
+    }
+
+
+    private void setCoverageOptionEnum(Properties prop) {
+        String coverageStr = prop.getProperty("coverage.option");
+        if (StringUtils.isBlank(coverageStr)) {
+            return;
+        }
+        coverageStr = coverageStr.trim();
+        for (CoverageOptionEnum temp : CoverageOptionEnum.values()) {
+            if (StringUtils.equalsIgnoreCase(coverageStr, temp.name())) {
+                this.coverageOptionEnum = temp;
+                break;
+            }
         }
     }
 
@@ -193,6 +221,14 @@ public class SonarProperties {
         this.severityTemplate = severityTemplate;
     }
 
+    public boolean isEnableUTSucc() {
+        return enableUTSucc;
+    }
+
+    public void setEnableUTSucc(boolean enableUTSucc) {
+        this.enableUTSucc = enableUTSucc;
+    }
+
     @Override
     public String toString() {
         return "SonarProperties{" +
@@ -206,6 +242,7 @@ public class SonarProperties {
                 ", templateName='" + templateName + '\'' +
                 ", severityTemplate='" + severityTemplate + '\'' +
                 ", properties=" + properties +
+                ", enableUTSucc=" + enableUTSucc +
                 '}';
     }
 }

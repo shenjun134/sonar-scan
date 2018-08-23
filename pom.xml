@@ -112,7 +112,8 @@
 							<archive>
 								<manifest>
 									<!--<mainClass>com.xiangsoft.sonar.sonarreport.Client</mainClass>-->
-									<mainClass>com.sonar.Base</mainClass>
+									<!--<mainClass>com.sonar.Base</mainClass>-->
+									<mainClass>com.sonar.UTFailBase</mainClass>
 									<!--<mainClass>com.sonar.SeverityBase</mainClass>-->
 								</manifest>
 							</archive>

@@ -22,7 +22,7 @@
     </appender>
 
     <root>
-        <priority value="INFO"></priority>
+        <priority value="ERROR"></priority>
         <appender-ref ref="console"/>
         <appender-ref ref="file"/>
     </root>
