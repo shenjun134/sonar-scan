@@ -18,7 +18,7 @@ public class UTDO {
     private String qualifier;
 
     /**
-     * src/test/java/com/statestr/gcth/usecase/coa/common/processor/UnitTestBase.java
+     * src/test/java/com/xxxxxxxxx/gcth/usecase/coa/common/processor/UnitTestBase.java
      */
     private String path;
 

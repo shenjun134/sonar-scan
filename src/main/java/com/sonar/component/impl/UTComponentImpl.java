@@ -196,7 +196,7 @@ public class UTComponentImpl extends AbstractComponent implements UTComponent {
         UTComponentImpl utComponent = new UTComponentImpl(webUser, webHost, webPassword);
         String name = "gcth-project-trunk-parent";
         Long id = 40344L;
-        String kee = "com.statestr.gcth:gcth-project-trunk-parent";
+        String kee = "com.xxxxxxxxx.gcth:gcth-project-trunk-parent";
         ProjectDO projectDO = new ProjectDO(name, kee, id);
         ProjectUTDO projectUTDO = utComponent.getUTList(projectDO);
 
@@ -218,7 +218,7 @@ public class UTComponentImpl extends AbstractComponent implements UTComponent {
         UTComponentImpl utComponent = new UTComponentImpl(webUser, webHost, webPassword);
         String name = "gcth-project-trunk-parent";
         Long id = 40344L;
-        String kee = "com.statestr.gcth:gcth-project-trunk-parent";
+        String kee = "com.xxxxxxxxx.gcth:gcth-project-trunk-parent";
         ProjectDO projectDO = new ProjectDO(name, kee, id);
         ProjectUTDO projectUTDO = utComponent.getFailList(projectDO);
 

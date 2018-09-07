@@ -4,7 +4,7 @@ import org.apache.commons.lang.StringUtils;
 
 public enum MetricsEnum {
 
-    //http://jabdl3504.it.statestr.com:9113/api/metrics/search?ps=500
+    //http://jabdl3504.it.xxxxxxxxx.com:9113/api/metrics/search?ps=500
 
 
     LINE_COVERAGE("line_coverage", "Line coverage"),
