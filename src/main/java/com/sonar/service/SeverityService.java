@@ -6,8 +6,6 @@ import com.sonar.constant.SeverityEnum;
 import com.sonar.dao.SonarDao;
 import com.sonar.model.*;
 import com.sonar.task.SeverityScanTask;
-import com.sonar.task.SonarScanTask;
-import com.statestr.gcth.core.InitializationException;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -43,7 +41,7 @@ public class SeverityService {
 
     public SeverityService(List<String> projectList, List<SeverityEnum> severityEnumList) {
         if (CollectionUtils.isEmpty(projectList)) {
-            throw new InitializationException("no project here ... ");
+            throw new RuntimeException("no project here ... ");
         }
         StringBuilder stringBuilder = new StringBuilder();
         if (CollectionUtils.isEmpty(severityEnumList)) {

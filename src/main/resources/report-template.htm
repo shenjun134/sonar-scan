@@ -1,143 +1,45 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <title>Sonar Report</title>
-        <style type="text/css">
-
+<head>
+    <title>Sonar Report</title>
+    <style type="text/css">
+            .author-detail table tr:nth-child(2n+1){background: #eee}
         </style>
-    </head>
-    <body style="font-family: 'Microsoft Sans Serif';">
-        <p style="font-family: 'Microsoft Sans Serif'; font-size: 30px; font-weight: bolder; height: 19px;">Sonar Report</p>
-        <hr style="color: #800000"/>
-        <p style="font-family: 'Microsoft Sans Serif'; font-size: 24px; font-weight: bolder">
-            Summary
-            <div style="position: absolute; right: 20px; top: 90px; display: flex; font-size: 10px; background: #eee; padding: 2px; border-radius: 2px">
-                <span style="padding-left: 6px; padding-right: 6px; "><span style="padding-right: 3px">BLOCKER<span style="color: darkred;">(A)</span>:</span>-${blocker}</span>
-                <span style="padding-right: 6px"><span style="padding-right: 3px">CRITICAL<span style="color: red;">(B)</span>:</span>-${critical}</span>
-                <span style="padding-right: 6px"><span style="padding-right: 3px">MAJOR<span style="color: green;">(C)</span>:</span>-${major}</span>
-                <span style="padding-right: 6px"><span style="padding-right: 3px">MINOR<span style="color: #aaa;">(D)</span>:</span>-${minor}</span>
-                <span style="padding-right: 6px"><span style="padding-right: 3px">INFO<span style="color: #ccc;">(E)</span>:</span>-${info}</span>
-            </div>
-        </p>
-        <div id="summary-ct"><table style="width: 100%; font-family: Calibri; font-size: 14px;">
-            <tr>
-                <td style="background: #D6EBFC">Project Name</td>
-                <td>${projectName}</td>
-                <td style="background: #D6EBFC">Total Coverage</td>
-                <td>${totalCoverage}%</td>
-                <td style="background: #D6EBFC">Total Compliance</td>
-                <td>${totalCompliance}%</td>
-            </tr>
-            <tr>
-                <td style="background: #D6EBFC"> Start Time</td>
-                <td>${startTime}</td>
-                <td style="background: #D6EBFC">Total File</td>
-                <td>${totalFile}</td>
-                <td style="background: #D6EBFC">Total Line of Code</td>
-                <td>${totalLine}</td>
-            </tr>
-            <tr>
-                <td style="background: #D6EBFC">End Time</td>
-                <td>${endTime}</td>
-                <td style="background: #D6EBFC">Total Change File</td>
-                <td>${totalChangeFile}</td>
-                <td style="background: #D6EBFC">Total Change Line Of Code</td>
-                <td>${totalChangeLine}</td>
-            </tr>
-        </table>
-        <code style="padding-left: 20px;">
-            <span style="color: darkred; padding-right: 3px;">A: ${count}</span>
-            <span style="color: red; padding-right: 3px;">B: ${count}</span>
-            <span style="color: green; padding-right: 3px;">C: ${count}</span>
-            <span style="color: #aaa; padding-right: 3px;">D: ${count}</span>
-            <span style="color: #ccc; padding-right: 3px;">E: ${count}</span>
-        </code>
-        </div>
-        <p style="font-family: 'Microsoft Sans Serif'; font-size: 24px; font-weight: bolder;">Overview - Employee Statistic</p>
-        <div id="detail-ct">
-            <table class="team-summary" style="border-style: ridge; border-width: 1px; width:100%; border-spacing: 0px;" cellpadding="0" cellspacing="0">
-                <tr>
-                    <th width="25%" style="vertical-align: middle; text-align: center; font-family: Calibri; padding: 0px; margin: 0px; background: #005CA6; color: #FFFFFF; font-weight: bold; font-size: large;">
-                        Team</th>
-                    <th width="25%" style="vertical-align: middle; text-align: right; font-family: Calibri; padding: 0px; padding-right: 10px; margin: 0px; background: #005CA6; color: #FFFFFF; font-weight: bold; font-size: large;">
-                        Line Count</th>
-                    <th width="25%" style="vertical-align: middle; text-align: right; font-family: Calibri; padding: 0px; padding-right: 10px; margin: 0px; background: #005CA6; color: #FFFFFF; font-weight: bold; font-size: large;">
-                        Coverage</th>
-                    <th width="25%" style="vertical-align: middle; text-align: right; font-family: Calibri; padding: 0px; padding-right: 10px; margin: 0px; background: #005CA6; color: #FFFFFF; font-weight: bold; font-size: large;">
-                        Compliance</th>
-                </tr>
-                <tr>
-                    <td width="25%" style="vertical-align: middle; text-align: center; font-family: Calibri; padding: 0px; margin: 0px; background: #FFFFFF;">
-                        ${teamId}
-                        <code style="padding-left: 20px;">
-                            <span style="color: darkred; padding-right: 3px;">A: ${count}</span>
-                            <span style="color: red; padding-right: 3px;">B: ${count}</span>
-                            <span style="color: green; padding-right: 3px;">C: ${count}</span>
-                            <span style="color: #aaa; padding-right: 3px;">D: ${count}</span>
-                            <span style="color: #ccc; padding-right: 3px;">E: ${count}</span>
-                        </code>
-                    </td>
-                    <td width="25%" style="vertical-align: middle; text-align: right; font-family: Calibri; padding: 0px; padding-right: 20px; margin: 0px; background: #FFFFFF;"> ${teamTotalLineNumber}</td>
-                    <td width="25%" style="vertical-align: middle; text-align: right; font-family: Calibri; padding: 0px; padding-right: 20px; margin: 0px; background: #FFFFFF; color: #008000;"> ${teamCoverageRate}%</td>
-                    <td width="25%" style="vertical-align: middle; text-align: right; font-family: Calibri; padding: 0px; padding-right: 20px; margin: 0px; background: #FFFFFF; color: #008000;"> ${teamComplianceRate}%</td>
-                </tr>
-            </table>
-            <div class="team-detail">
-                <table class="author-summary" align="center" style="border-style: ridge; border-width: 1px; width:98%;" cellpadding="0" cellspacing="0" >
-                    <tr>
-                        <th style="vertical-align: middle; text-align: center; font-family: Calibri; padding: 0px; margin: 0px; background: #007CA6; color: #FFFFFF; font-weight: bold; font-size: 14px;">Author</th>
-                        <th style="vertical-align: middle; text-align: right; font-family: Calibri; padding: 0px;  padding-right: 10px; margin: 0px; background: #007CA6; color: #FFFFFF; font-weight: bold; font-size: 14px;">File Count</th>
-                        <th style="vertical-align: middle; text-align: right; font-family: Calibri; padding: 0px; padding-right: 10px; margin: 0px; background: #007CA6; color: #FFFFFF; font-weight: bold; font-size: 14px;">Line Count</th>
-                        <th style="vertical-align: middle; text-align: right; font-family: Calibri; padding: 0px;padding-right: 10px;  margin: 0px; background: #007CA6; color: #FFFFFF; font-weight: bold; font-size: 14px;">Coverage</th>
-                        <th style="vertical-align: middle; text-align: right; font-family: Calibri; padding: 0px; padding-right: 10px; margin: 0px; background: #007CA6; color: #FFFFFF; font-weight: bold; font-size: 14px;">Compliance</th>
-                    </tr>
-                    <tr>
-                        <td style="vertical-align: middle; text-align: left; font-family: Calibri; padding-left: 20px; margin: 0px; background: #FFFFFF;">
-                            ${empId}
-                            <code style="padding-left: 20px;">
-                                <span style="color: darkred; padding-right: 3px;">A: ${count}</span>
-                                <span style="color: red; padding-right: 3px;">B: ${count}</span>
-                                <span style="color: green; padding-right: 3px;">C: ${count}</span>
-                                <span style="color: #aaa; padding-right: 3px;">D: ${count}</span>
-                                <span style="color: #ccc; padding-right: 3px;">E: ${count}</span>
-                            </code>
-                        </td>
-                        <td style="vertical-align: middle; text-align: right; font-family: Calibri; padding: 0px; padding-right: 20px; margin: 0px; background: #FFFFFF;">${fileCount}</td>
-                        <td style="vertical-align: middle; text-align: right; font-family: Calibri; padding: 0px; padding-right: 20px; margin: 0px; background: #FFFFFF;">${empTotalLineNumber}</td>
-                        <td style="vertical-align: middle; text-align: right; font-family: Calibri; padding: 0px; padding-right: 20px; margin: 0px; background: #FFFFFF; color: #008000;">${empCoverageRate}%</td>
-                        <td style="vertical-align: middle; text-align: right; font-family: Calibri; padding: 0px; padding-right: 20px; margin: 0px; background: #FFFFFF; color: #008000;">${empComplianceRate}%</td>
-                    </tr>
-                </table>
-                <div class="author-detail">
-                    <table align="center" style="border-style: ridge; border-width: 1px; width:97%;" cellpadding="0" cellspacing="0" >
-                        <tr>
-                            <th width="70%" style="border-style: solid; border-width: 1px; font-size: 12px; background: #D6EBFC">Class Name</th>
-                            <th width="10%" style="border-style: solid; border-width: 1px; font-size: 12px; background: #D6EBFC">Line Count</th>
-                            <th width="10%" style="border-style: solid; border-width: 1px; font-size: 12px; background: #D6EBFC">Coverage</th>
-                            <th width="10%" style="border-style: solid; border-width: 1px; font-size: 12px; background: #F6EBFC">Compliance</th>
-                        </tr>
-                        <tr>
-                            <td style="border-style: solid; border-width: 1px; padding-left: 10px; font-size: 12px;">
-                                <a target="_blank" href="${link}">${className}</a>
-                                <code style="padding-left: 20px;">
-                                    <span style="color: darkred; padding-right: 3px;">A: ${count}</span>
-                                    <span style="color: red; padding-right: 3px;">B: ${count}</span>
-                                    <span style="color: green; padding-right: 3px;">C: ${count}</span>
-                                    <span style="color: #aaa; padding-right: 3px;">D: ${count}</span>
-                                    <span style="color: #ccc; padding-right: 3px;">E: ${count}</span>
-                                </code>
-                            </td>
-                            <td style="border-style: solid; text-align: right; padding-right: 20px; border-width: 1px; font-size: 12px; ">${classLineNumber}</td>
-                            <td style="border-style: solid; text-align: right; padding-right: 20px; border-width: 1px; font-size: 12px; ">${classCoverageRate}%</td>
-                            <td style="border-style: solid; text-align: right; padding-right: 20px; border-width: 1px; font-size: 12px; " >${classComplianceRate}%</td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <p style="font-weight:bolder; text-align:center; margin-top:30px; font-size: 12px">
-            <span>GC|GTM</span> - SAR <span>(Sonar Analyze Report)</span> - Limited Access</p>
-    </body>
+</head>
+<body style="font-family: 'Microsoft Sans Serif';">
+<p style="font-family: 'Microsoft Sans Serif'; font-size: 30px; font-weight: bolder; height: 19px;">Sonar Report</p>
+<hr style="color: #800000"/>
+<p style="font-family: 'Microsoft Sans Serif'; font-size: 24px; font-weight: bolder">
+    Summary
+<div style="position: absolute; right: 10px; top: 20px; display: flex; font-size: 10px; background: #eee; padding: 2px; border-radius: 2px">
+    <span style="padding-left: 6px; padding-right: 6px; "><span style="padding-right: 3px">BLOCKER<span style="color: darkred;">(A)</span>:</span>-${blocker}</span>
+    <span style="padding-right: 6px"><span style="padding-right: 3px">CRITICAL<span style="color: red;">(B)</span>:</span>-${critical}</span>
+    <span style="padding-right: 6px"><span style="padding-right: 3px">MAJOR<span style="color: green;">(C)</span>:</span>-${major}</span>
+    <span style="padding-right: 6px"><span style="padding-right: 3px">MINOR<span style="color: #aaa;">(D)</span>:</span>-${minor}</span>
+    <span style="padding-right: 6px"><span style="padding-right: 3px">INFO<span style="color: #ccc;">(E)</span>:</span>-${info}</span>
+</div>
+<div style="position: absolute; right: 10px; top: 40px; display: flex; font-size: 10px; background: #eee; padding: 2px; padding-right: 6px; border-radius: 2px">
+    <span style="font-weight: bold;">Covered:&nbsp;&nbsp;</span><span>total line of UT hit + total line of no need UT hit</span>
+</div>
+<div style="position: absolute; right: 10px; top: 60px; display: flex; font-size: 10px; background: #eee; padding: 2px; padding-right: 6px; border-radius: 2px">
+    <span style="font-weight: bold;">Optimistic Coverage:&nbsp;&nbsp;</span><span>(Covered UT + Covered Branch + Static)/(Total UT + Total Branch + Static)</span>
+</div>
+<div style="position: absolute; right: 10px; top: 80px; display: flex; font-size: 10px; background: #eee; padding: 2px; padding-right: 6px; border-radius: 2px">
+    <span style="font-weight: bold;">Real Coverage:&nbsp;&nbsp;</span><span>(Covered UT + Covered Branch)/(Total UT + Total Branch)</span>
+</div>
+<div style="position: absolute; right: 10px; top: 100px; display: flex; font-size: 10px; background: #eee; padding: 2px; padding-right: 6px; border-radius: 2px">
+    <span  style="font-weight: bold"><a href="https://docs.sonarqube.org/display/SONAR/Metric+definitions#Metricdefinitions-Tests" target="_blank">Coverage%</a>:&nbsp;&nbsp;</span><span>(CT + CF + LC)/(2*B + EL)</span>
+</div>
+<div style="position: absolute; right: 10px; top: 120px; display: flex; font-size: 10px; background: #eee; padding: 2px; padding-right: 6px; border-radius: 2px">
+    <span  style="font-weight: bold">Compliance%:&nbsp;&nbsp;</span><span>100% - A.point*countA - C.point*countC - D.point*countD - E.point*countE</span>
+</div>
+</p>
+<div id="summary-ct">#SUMMARY_PART#</div>
+<p style="font-family: 'Microsoft Sans Serif'; font-size: 24px; font-weight: bolder;">Overview - Employee Statistic</p>
+<div id="detail-ct">#DETAIL_PART#</div>
+<p style="font-weight:bolder; text-align:center; margin-top:30px; font-size: 12px">
+    <span>GC|GTM</span> - SAR <span>(Sonar Analyze Report)</span> - Limited Access</p>
+</body>
 
 </html>
